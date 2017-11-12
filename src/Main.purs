@@ -11,9 +11,7 @@ import Data.Foreign (ForeignError(..))
 import Data.Formatter.DateTime (Formatter, FormatterCommand(DayOfMonthTwoDigits, Placeholder, MonthTwoDigits, YearFull), format, unformat)
 import Data.List (List(Nil), (:))
 import Data.List.NonEmpty (NonEmptyList)
-import Data.Record (get, set)
 import Simple.JSON (readJSON)
-import Type.Prelude (SProxy(..))
 
 type MyThing =
   { dateTime :: DateTime
@@ -31,9 +29,8 @@ myDateFormat
 parseMyThing :: String -> Either (NonEmptyList ForeignError) MyThing
 parseMyThing s = do
   parsed <- readJSON s
-  let string = get (SProxy :: SProxy "dateTime") parsed
-  dateTime <- lmap (pure <<< ForeignError) $ unformat myDateFormat string
-  pure $ set (SProxy :: SProxy "dateTime") dateTime parsed
+  dateTime <- lmap (pure <<< ForeignError) $ unformat myDateFormat parsed.dateTime
+  pure $ parsed { dateTime = dateTime }
 
 testJSON1 :: String
 testJSON1 = """
