@@ -1,0 +1,13 @@
+{
+    "name": "formatters-date-parsing-simple-json-example",
+    "set": "karaage",
+    "source": "https://github.com/justinwoo/package-sets.git",
+    "depends": [
+        "formatters",
+        "simple-json",
+        "psci-support",
+        "console",
+        "eff",
+        "prelude"
+    ]
+}
