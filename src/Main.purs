@@ -29,8 +29,10 @@ myDateFormat
 parseMyThing :: String -> Either (NonEmptyList ForeignError) MyThing
 parseMyThing s = do
   parsed <- readJSON s
-  dateTime <- lmap (pure <<< ForeignError) $ unformat myDateFormat parsed.dateTime
+  dateTime <- formatDateTime parsed.dateTime
   pure $ parsed { dateTime = dateTime }
+  where
+    formatDateTime = lmap (pure <<< ForeignError) <<< unformat myDateFormat
 
 testJSON1 :: String
 testJSON1 = """
